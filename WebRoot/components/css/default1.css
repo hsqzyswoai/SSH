@@ -1,0 +1,11 @@
+/**º”‘ÿµ»¥˝Ãı*/
+.bar_div{z-index: 20000;width:200px;position:absolute;border:1px #000000 dashed;margin-top:-16px; margin-left:-100px;top:40%; left:50%; padding:5px;}
+.bar_icons{background:url(../images/easyui/large-loading.gif) no-repeat;
+		width:32px;
+		height:32px;
+		margin-right:8px;
+		float:left;
+		margin-left:6px;
+		vertical-align:middle;
+}
+.bar_font{font-size:9pt;color:#000000;line-height:32px; }

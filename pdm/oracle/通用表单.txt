@@ -1,0 +1,202 @@
+----------------库表管理----------------
+
+-------------分类------------------
+create table DGT_DBTM_SORT (
+   I_ID                 varchar2(32)                  not null,
+   I_OID                varchar2(32)                  null,
+   S_SORTNAME           varchar2(128)                 not null,
+   S_SORTDESC           varchar2(255)                 null,
+   I_PID                varchar2(32)                  null,
+   I_TYPE               smallint                     not null,
+   constraint PK_DGT_DBTM_SORT primary key (I_ID)
+)
+
+
+-------------库表包------------------
+create table DGT_DBTM_ARCHIVE (
+  I_ID     VARCHAR2(32) not null,
+  I_OID    VARCHAR2(32) null,
+  I_SORTID VARCHAR2(32) null,
+  S_NAME   VARCHAR2(64) null,
+  S_DESC   VARCHAR2(200) null,
+  constraint PK_DGT_DBTM_ARCHIVE primary key (I_ID)
+)
+
+---------------库表---------------
+
+create table DGT_DBTM_DBT (
+  I_ID        VARCHAR2(32)  not null,
+  I_OID       VARCHAR2(32)  null,
+  S_VER       VARCHAR2(32)  not null,
+  S_TABLECODE VARCHAR2(128) not null,
+  S_TABLENAME VARCHAR2(128) not null,
+  I_PID       VARCHAR2(32)  null,
+  I_STATUS    INTEGER not   null,
+  I_ARCHIVEID VARCHAR2(32)  null,
+  S_FKTEXT    VARCHAR2(4000) null,
+  I_ATTACH   INTEGER        null,
+  constraint PK_DGT_DBTM_DBT primary key (I_ID)
+)
+---------------库表字段---------------
+
+create table DGT_DBTM_FIELD (
+  I_ID         VARCHAR2(32)  not null,
+  I_NUM        INTEGER       not null,
+  I_DBTID      VARCHAR2(32)  not null,
+  S_FILEDCODE  VARCHAR2(128) not null,
+  S_FILEDNAME  VARCHAR2(128) not null,
+  S_FILEDTYPE  VARCHAR2(128) not null,
+  I_FILEDLEN   INTEGER       null,
+  I_DECPOS     INTEGER       null,
+  I_PRYKEY     INTEGER       not null,
+  I_FKEY       INTEGER       not null,
+  S_FKTABLENAME   varchar2(128)     null,
+  S_FKCODE        varchar2(128)     null,
+  I_SYFILED    INTEGER       null,
+  I_DISPLAY    INTEGER       null,
+  I_NULLVALUE  INTEGER       not null,
+  I_IDENX      INTEGER       not null,
+  I_VALUETYPE  INTEGER       not null,
+  I_MINVALUE   NUMBER(15)    null,
+  I_MAXVALUE   NUMBER(15)    null,
+  I_REFFIELDID VARCHAR2(32)  null,
+  I_OID        VARCHAR2(32)  null,
+  I_CONDITION  INTEGER       null,
+  S_UNIT       VARCHAR2(128) null,
+  S_FIELDJSON     VARCHAR2(1024) null,
+  constraint PK_DGT_DBTM_FIELD primary key (I_ID)
+)
+
+-----------枚举管理-----
+create table DGT_DBTM_ENUM (
+   I_ID                 VARCHAR2(32)                  not null,
+   I_OID                VARCHAR2(32)                  null,
+   I_FILEDID            VARCHAR2(32)                  not null,
+   S_TABLENAME          varchar2(46)                    null,
+   S_FILEDNAME          varchar2(46)                    null,
+   I_VER                int                             null,
+   I_ENUMVALUE          varchar2(128)                    not null,
+   S_ENUMDSCR           varchar2(128)                   not null,
+   S_ENUMDESC           varchar2(256)                   null,
+   I_DISABLE            smallint                        not null,
+   constraint PK_DGT_DBTM_ENUM primary key (I_ID)
+)
+
+-----------简单对象管理-------------
+create table DGT_DBTM_SIMPLE (
+   I_ID                 VARCHAR2(32)                  not null,
+   I_OID                VARCHAR2(32)                  null,
+   I_FILEDID            VARCHAR2(32)                  not null,
+   S_TABLENAME          varchar2(45)                    null,
+   S_FILEDNAME          varchar2(45)                    null,
+   I_VER                int                            null,
+   I_VALUE              smallint                       not null,
+   I_REFVALUE           smallint                       not null,
+   S_ENUMDSCR           varchar2(128)                   not null,
+   constraint PK_DGT_DBTM_SIMPLE primary key (I_ID)
+)
+
+----------通用表单记录表-----------
+create table DGT_PUB_RECORD
+(
+  I_ID         NUMBER(15) not null,
+  I_TYPE       INTEGER,
+  I_ARCHIVEID  VARCHAR2(32),
+  S_VER        VARCHAR2(45),
+  S_ORIG       CLOB,
+  S_CHANGED    CLOB,
+  D_CREATETIME DATE,
+  S_STAFF      VARCHAR2(100),
+  S_STAFFNAME  VARCHAR2(100),
+  I_EXPORT     INTEGER,
+  I_STEP       NUMBER(15) not null,
+  I_SORTID     VARCHAR2(32),
+  I_RECORDTYPE INTEGER,
+  I_STATUS     INTEGER,
+  constraint PK_DGT_PUB_RECORD primary key (I_ID)
+)
+
+
+----------表单包-------------------
+create table DGT_PT_ARCHIVE
+(
+  I_ID            VARCHAR2(32) not null,
+  I_OID           VARCHAR2(32),
+  I_SORTID        VARCHAR2(32) not null,
+  I_DBTMARCHIVEID VARCHAR2(32),
+  S_NAME          VARCHAR2(64),
+  S_DESC          VARCHAR2(200),
+  constraint PK_DGT_PT_ARCHIVE primary key (I_ID)
+)
+
+-----------表单分类----------------
+create table DGT_PT_SORT
+(
+  I_ID       VARCHAR2(32) not null,
+  I_OID      VARCHAR2(32),
+  S_SORTNAME VARCHAR2(128) not null,
+  S_SORTDESC VARCHAR2(255),
+  I_PID      VARCHAR2(32),
+  I_TYPE     INTEGER not null,
+  constraint PK_DGT_PT_SORT primary key (I_ID)
+)
+
+----------------表单--------------------
+create table DGT_PT_PAGE
+(
+  I_ID         VARCHAR2(32) not null,
+  I_OID        VARCHAR2(32),
+  S_CODE       VARCHAR2(128) not null,
+  I_ARCHIVEID  VARCHAR2(32),
+  S_VER        VARCHAR2(32) not null,
+  S_FORMNAME   VARCHAR2(128) not null,
+  I_DBTMVER    INTEGER not null,
+  S_TEMP       VARCHAR2(128) not null,
+  I_STATUS     INTEGER not null,
+  S_PID        VARCHAR2(32),
+  D_CREATEDATE DATE,
+  S_IPADDRESS VARCHAR2(64),
+  constraint PK_DGT_PT_PAGE primary key (I_ID)
+)
+
+----------------表单部件----------------
+create table DGT_PT_COMPINPAGE
+(
+  I_ID       VARCHAR2(32) not null,
+  I_OID      VARCHAR2(32),
+  I_PAGEID   VARCHAR2(32) not null,
+  S_SCENE    VARCHAR2(1024) not null,
+  S_PROPERTY CLOB not null,
+  constraint PK_DGT_PT_COMPINPAGE primary key (I_ID)
+)
+
+/*==============================================================*/
+/* Table: DGT_PT_BILLNO 编号生成器                              */
+/*==============================================================*/
+create table DGT_PT_BILLNO
+(
+  I_PAGEID        varchar2(32)   not null,
+  S_BILLNO        VARCHAR2(64),
+  S_DATEFMT       VARCHAR2(32),
+  I_CURVALUE      NUMBER(15)
+)
+
+/*==============================================================*/
+/* Table: DGT_PAGE_FLOW_RECORD 表单流水记录表（每年一张）       */
+/*==============================================================*/
+create table DGT_PAGE_FLOW_RECORD (
+	I_ID VARCHAR2(32) not null,
+	I_PAGEID VARCHAR2(32),
+	I_FLOWID INTEGER,
+	D_RECORDDATE DATE,
+	S_COMPINPAGE CLOB,
+	S_IPADDRESS VARCHAR2(64),
+	constraint PK_DGT_FLOW_RECORD primary key (I_ID)
+)
+
+create index DBT_ARCHIVEID on DGT_DBTM_DBT (I_ARCHIVEID);
+create index FIELD_DBTID on DGT_DBTM_FIELD (I_DBTID);
+create index RECORD_ARCHIVEID on DGT_PUB_RECORD (I_ARCHIVEID);
+create index PAGE_ARCHIVEID on DGT_PT_PAGE (I_ARCHIVEID);
+create index COMPINPAGE_PAGEID on DGT_PT_COMPINPAGE (I_PAGEID);
+create index RECORD_I_PAGEID on DGT_PAGE_FLOW_RECORD (I_PAGEID);  

@@ -1,0 +1,410 @@
+<html>
+<head>
+<title>控件样例</title>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<!--控件-->
+<link rel="stylesheet" type="text/css" href="./css/main.css" />
+<link rel="stylesheet" type="text/css" href="./css/main2.css" />
+
+<script type="text/javascript" src="./components/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="./components/jquery.jqtransform.js"></script>
+<script src="../../../admin/common/right.jsp?type=1"></script>
+<script src="./components/datagrid.js"></script>
+
+<script src="./components/datePicker.js"></script>
+<script src="./components/fileUpload.js"></script>
+<script src="./components/layout.js"></script>
+<script src="./components/menu.js"></script>
+<script src="./components/number.js"></script>
+<script src="./components/pagination.js"></script>
+<script src="./components/panel.js"></script>
+<script src="./components/popupWindow.js"></script>
+<script src="./components/select.js" charset="utf-8"></script>
+<script src="./components/radio.js"></script>
+<script src="./components/Toolbar.js"></script>
+
+<script src="./components/layer/layer.js" charset="utf-8"></script>
+<script src="./components/base.js" charset="utf-8"></script>
+<script src="./components/window.js"></script>
+
+
+<script src="../../../calendar/WdatePicker.js"></script>
+<script>
+    //初始化
+	window.onload=function(){
+	  setWH();
+		
+	  $(".orderTable input,select").addClass("deInput");  //重置输入框的样式
+  	  $(".orderTable td").each(function(){$(this).children().first().css({width:'90%'}); }); //让表单元素自适应表格的宽度
+
+  	  initToolBar(); //工具栏初始化
+  	  initList(); //列表初始化
+  	  
+  	  //开窗关窗
+  	 var boo = (location.href.indexOf("var=1") > 0) ; 
+  	 $("#winBtn").text(boo?"div关窗":"div开窗").click(boo ? closeDivWindow : openDivWindow)
+  	  
+	}
+    
+    window.onresize = setWH;
+    
+    function setWH(){
+    	$(".positionfixed").css("top", ($(window).height()-35)+"px");
+    }
+	
+	//下拉多选
+	function initSel(){
+		var opts = {
+				isMulti:true, //true为多选，false为单选, 默认false
+				showTip:true, //下拉选项是否显示title提示，文字内容太长时建议显示
+				datas:[{id:"1",text:"A(如果是用select重构，他会自动取optiont选项, 但优先以此属性给的值为准)"},{id:"2",text:"B"}], //如果是用select重构，他会自动取optiont选项, 但优先以此属性给的值为准
+				//id:datas数据中隐式值字段名, 默认取"id"字段
+				//text:datas数据中显示文本字段名,默认取"text"字段
+				onChange:function(obj){
+					//alert(obj.id+"=="+obj.text);
+				}, //所选值发生变化事件 //
+				isShowSelectBtn:1,//是否显示下拉按钮 1是，0否，默认1
+				placeholder: "全部",//自定义默认提示语，默认“请选择”
+				clear:1,//开放清空按钮，0不开放，1开放，默认1
+				width:200,//下拉div的宽度设置，如100，只有在此值大于文本框宽度时才生效，默认以文本框宽度为准
+				height:200,//下拉div的最大高度设置，如200，默认170
+				disabled:false//只读，禁操作
+			};
+		$("#sel").select( opts );
+		$("#sel2").select( opts );
+	}
+	function getValueSel(){
+		var v = $("#sel").select("getValue");
+		alert(v.id+"--"+v.text);
+	}
+	function setValueSel(){
+	       $("#sel").select("setValue", {id:"1",text:"A"});
+	}
+	function setItemsSel(){
+		$("#sel").select("setItems", [{id:"1",text:"A1"},{id:"2",text:"B"},{id:"3",text:"C"}]);
+	}
+	
+	
+	//下拉单选，可搜索
+	function initSerach(){
+		var searchData =  [];
+        for(var i=0; i<50; i++){
+        	searchData.push({id:i,text:"下拉选"+i});
+        }
+		$("#search").select(
+				{
+					isMulti:false, //true为多选，false为单选, 默认false
+					showTip:true, //下拉选项是否显示title提示，文字内容太长时建议显示
+					datas:searchData, //如果是用select重构，他会自动取optiont选项, 但优先以此属性给的值为准
+					//id:datas数据中隐式值字段名, 默认取"id"字段
+					//text:datas数据中显示文本字段名,默认取"text"字段
+					onChange:function(obj){console.log("onchange事件"+obj.text)}, //所选值发生变化事件
+					isShowSelectBtn:0,//是否显示下拉按钮 1是，0否，默认1
+					placeholder:'请选择',//自定义默认提示语，默认“请选择”
+					clear:1,//开放清空按钮，0不开放，1开放，默认1
+					//width://下拉div的宽度设置，如100，只有在此值大于文本框宽度时才生效，默认以文本框宽度为准
+					//height://下拉div的最大高度设置，如200，默认170
+					disabled:true,//只读，禁操作
+					
+					search:true//可搜索
+				}
+			);
+
+	}
+	function setValuePro(){
+		$("#search").select("setValue",{id:"1"});
+	}
+	function getValuePro(){
+		var v = $("#search").select("getValue");
+		alert(v.id+"--"+v.text);
+	}
+	function setItemsPro(){
+		var newData = [{id:"1",text:"a"},{id:"101",text:"b"},{id:"102",text:"c"},{id:"103",text:"d"},
+		               {id:"104",text:"e"},{id:"105",text:"f"},{id:"106",text:"g"},{id:"107",text:"h"}];
+		$("#search").select("setItems",newData);
+	}
+	function optionsPro(){
+		var options =  $("#search").select("options");
+		alert(options);
+	}
+    
+	
+	//平铺选(单选，多选，二选一)
+    function initSingle(type){
+		$("#single").radio(
+			{
+				type: type,//1单选，2多选，3二选一,
+				datas:[{value:1,data:'开',color:'green'},{value:0,data:'关',color:'red'}], 
+					//[{value:"1",data:"A"},{value:"2",data:"B"},{value:"3",data:"C"},{value:"4",data:"A4"},{value:"5",data:"B5"},{value:"6",data:"C6"}], //如果是用select重构，他会自动取optiont选项, 但优先以此属性给的值为准
+				//id:datas数据中隐式值字段名, 默认取"id"字段
+				//text:datas数据中显示文本字段名,默认取"text"字段
+				id: "value",
+				text: "data",
+				addDefault:true,
+				defaultSelect:1,
+			    //width:190,
+				onChange:function(obj){
+					alert(obj.id+"=="+obj.text);
+				}, //所选值发生变化事件 //alert(obj.id+"=="+obj.text);
+				height:30 ,//开关的高度，可不给
+				fontSize:18,
+				minItemWidth:50,
+				maxItemWidth:140,
+				itemMargin:5 
+			}		
+		);
+   	}
+   	function setValueSingle(){
+   		$("#single").radio("setValue", {id:1});
+   	}
+   	function getValueSingle(){
+   		var v = $("#single").radio("getValue");
+   		console.log(v);
+   		alert(v.id+"--"+v.text);
+   	}
+   	function setItemSingle(){
+   		$("#single").radio("setItems", [{value:"1",data:"恢复"},{value:"2",data:"未恢复"},{value:"3",data:"B"}]);
+   	}
+   	function getSingleSelOptions(){
+   		var opt = $("#single").radio("options");
+   		alert(opt);
+   	} 
+	
+	
+    //数值框
+    function initNumber(){
+           $("#number").number({max:100,min:10,dataType:"digit"});
+    }
+
+    //弹窗选
+    function initPopu(){
+    	 $("#popu").popupWindow({onClick:function(){alert("onclick");}});
+    }
+	function getValuePopu(){
+		var v = $("#popu").popupWindow("getValue");
+		alert(v.id+"--"+v.text);
+	}
+	function setValuePopu(){
+		$("#popu").popupWindow("setValue", {id:"1",text:"A"});
+	}
+	
+	//时间框
+    function datePicker(){
+    	 $("#date").datePicker({});
+    }
+
+	
+    /*
+    70a4fc58a6eb473a94ea85eb97925809
+    d218260cc337440c9b74593f62e3d44b
+    79adff2de93f48148077fe5a20fadf68
+    sysRightList
+    */
+	
+    //工具栏   
+    function initToolBar(){
+    	
+    	// alert(sysRightList["d5511cd504ae46d9967047b8cd2f3b4b"]);
+    	 
+    	//test 
+    	//sysRightList["d218260cc337440c9b74593f62e3d44b"]=0;
+    	
+         var toolJson = [
+				{text : '权限控制测试', rightNo:'d218260cc337440c9b74593f62e3d44b',
+					  handler : function(){
+					    var items =  $("#list").datagrid("getSelections");
+					    alert("勾选的行数是："+items.length);
+					  }
+				},
+				{text : '取行选数据', rightNo:'70a4fc58a6eb473a94ea85eb97925809',
+					handler : function(){
+					   var item = $("#list").datagrid("getSelected");
+					   var msg = item ? "行选的是："+item.name  : "没有行选数据";
+					   alert(msg);
+					}
+				},
+				{text : '取勾选数据',
+					  handler : function(){
+					    var items =  $("#list").datagrid("getSelections");
+					    alert("勾选的行数是："+items.length);
+					  }
+				},
+				{text : '更新第1行',
+					  handler : function(){
+					    $("#list").datagrid("updateRow",{row:{name:"张三",disabled:true}, index:0});
+					  }
+				}
+            ];
+         
+            //工具栏配置
+	     var toolbarSettings = {
+			renderTo : 'toolbar',
+			align : 'left',  //仅支持right,left
+			items : Toolbar.getItemsByRightOrder(toolJson) //按权限管理顺序显示按钮
+	
+	     };
+	     //工具栏
+	     var toolbar = new Toolbar(toolbarSettings).render();
+   }
+   
+   //列表
+   function initList(){
+     	var w = $(window).width();
+     	var w1 = w - 70-70
+     	
+     	//列定义，注意是又层中括号
+     	var cols = [[
+			{field:'id',title:'标识',displayTip:true, width:70, align:'right',hidden:''},
+			{field:'name',title:'姓名',displayTip:true,width:70,align:'left',hidden:''},
+			{field:'sex',title:'性别',displayTip:true,width:20, align:'left',hidden:'',formatter:function(value,row,index){
+				return (value==1) ? '男' : '女';
+			      }
+			}
+     	]];
+
+       	//表格初始化
+		$('#list').datagrid({
+			idField:"id", //明确唯一主键
+			frozenColumns:[[{field:'ck',checkbox:true}]],//复选框列
+			columns:cols,//普通列
+			onDblClickRow:function(rowIndex, rowData){ alert("单击事件："+rowIndex+"--"+rowData.name);}, //行双击事件
+			onClickRow:function(rowIndex, rowData){ }, //行单击事件
+			width:1024, //初始宽
+			height:300, //实始高
+			pagination:true //显示分页栏
+		});
+	
+		//分页栏初始化
+		var p = $('#list').datagrid('getPager');//先获取列表对象
+		$(p).pagination({
+			 total:0,//设置总记录数，默认1
+			 pageSize:30,//每页显示的记录条数，不设置默认为10
+			 pageNumber:0,//当前页，默认1
+			 position:"center",//left,right,center
+			 onSelectPage:function(pageNo,limit){//点击上、下一页时，触发事件
+			 	alert("点击上、下页事件：\n下一页："+pageNo+"\n每页行显示行数:"+limit);
+			 }
+		 });
+
+       	//样例数据
+        var data =[];
+       	for(var i=0;i<100;i++){
+       		data.push({id:i+"",name:i+"呵呵"+(i%10==1?"abc def ghi jkl mno pqr stu vwx yz":""),sex:(i%2),  disabled:(i==1) });
+       	}
+
+       //加载数据
+        $('#list').datagrid("loadData",data);
+		//重置表格宽度与高度 (用于界面自适应)
+		$('#list').datagrid("reSize",{width:$("body").width(),height:200});
+				
+		//分页栏重置回第1页
+		var options = $(p).pagination("options");
+		options.total=1000; //当前总记录数
+		options.pageNumber=1;
+		$(p).pagination(options);
+
+    }
+  
+   //开窗
+   function openDivWindow(){
+	   $("#divWindow").window({
+		   	  //closeButtonEnable: false,
+              //confirmButtonEnable: false,	
+		      title: "窗体标题", //标题 
+		      width: 800,   //宽度 
+		      height: 400,   //高度 
+		      //content: "", //'内容（可以支持html）',   //如果url属性值没配则打开这个内容 
+		      url: "/SSH/components/demo.html?var=1" 
+		   });
+   }
+   
+   //关窗
+   function closeDivWindow(){
+	  window.parent.$("#divWindow").window("close");
+   }
+   
+</script>
+<style>
+button{
+  margin:5px;
+  padding:5px 10px;
+  background:gray;
+  color:white;
+}
+button:hover{
+	background:rgba(51, 152, 254, 1);
+}
+
+.positionfixed {
+    position: fixed;
+    background: #eee;
+    width: 100%;
+    height: 35px;
+    top: 500px;
+    z-index: 1;
+}
+
+</style>
+</head>
+
+<body>
+   <div class="positionfixed"> <div id="sel2"></div> </div>
+
+   <table style="width:100%" class="orderTable xw_orderTable">
+   	<tr><td>div转变成下拉选(多选)</td><td><div id="sel"></div></td>
+   	<th>
+   	<button onclick="initSel()">init</button>
+   	<button onclick="setValueSel()">setValue</button>
+   	<button onclick="getValueSel()">getValue</button>
+   	<button onclick="setItemsSel()">setItems</button>
+   	</th></tr>
+
+	<tr><td>select转变成下拉选(单选),可以输入搜索</td><td><select id="search"></select></td>
+   	<th>
+   	<button onclick="initSerach()">init</button>
+   	<button onclick="setValuePro()">setValue</button>
+   	<button onclick="getValuePro()">getValue</button>
+   	<button onclick="setItemsPro()">setItems</button>
+   	<button onclick="optionsPro()">options</button>
+   	</th></tr>
+   	
+	<tr><td>平铺：二选一、单选、多选</td><td><div id="single"></div></td>
+	<th>
+   	<button onclick="initSingle(1)">单选</button>
+   	<button onclick="initSingle(2)">多选</button>
+   	<button onclick="initSingle(3)">二选一</button>
+   	<button onclick="setValueSingle()">setValue</button>
+   	<button onclick="getValueSingle()">getValue</button>
+   	<button onclick="setItemSingle()">setItems</button>
+	<button onclick="getSingleSelOptions()">options</button>
+   	</th>
+	</tr>
+	
+   	<tr><td>弹窗选</td><td><input id="popu"/></td>
+   	<th>
+   	<button onclick="initPopu()">init</button>
+   	<button onclick="setValuePopu()">setValue</button>
+   	<button onclick="getValuePopu()">getValue</button>
+   	</th></tr>
+
+   	<tr><td>时间框</td><td><input id="date" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class='Wdate'  /></td>
+   	<th><button onclick="datePicker()">init</button></th></tr>
+
+   	<tr><td>数值框</td><td><input id="number"/></td><th><button onclick="initNumber()">init</button></th></tr>
+   	
+   	<tr><td></td><td></td><th><button id="winBtn" ></button></th></th></tr>
+
+   	<tr><td></td><td></td></tr>
+   </table>
+
+   <div id="divWindow"></div>
+
+   <div id="toolbar"></div>
+   <div style="width:800px;">
+    datagrid的控件的API参考 easyUI 的 datagrid。行数据内如果有disabled属性，且值不是false或0 ， 则复选框会自动置为禁用状态
+   <div id="list"></div>
+   </div>
+
+</body>
+
+</html>

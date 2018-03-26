@@ -1,0 +1,325 @@
+当前版本：V1.0.0.8
+更新时间：2012-2-29 16:00:00
+负责人  ：高涛
+##################################################################
+
+更新版本：V1.0.0.0
+更新时间：2012-2-29 16:00:00
+更新人员：高涛
+更新描述：确定第一版本          
+##################################################################
+
+更新版本：V1.0.0.1
+更新时间：2012-3-6 18:00:00
+更新人员：高涛
+更新描述：针对tbJdbcLog表，将sPath字段长度由原来的500改为1024
+更新SQL：以下SQL以oracle为准，其它版本着情更改  
+alter table tbJdbcLog modify sPath varchar2(1024)     
+##################################################################
+
+更新版本：V1.0.0.2
+更新时间：2012-3-16 9:00:00
+更新人员：高涛
+更新描述：加入“快速开发2”包
+更新SQL：见各子文件夹中的“快速开发2”
+##################################################################
+
+更新版本：V1.0.0.3
+更新时间：2012-6-3 9:00:00
+更新人员：高涛
+更新描述：按全技术加固工作，需要进行SQL更新
+更新SQL：以下SQL为oracle版，其它版本，请着情改动
+--新表
+--IP黑白名单
+CREATE TABLE tbOsIPRight
+(
+	iIPId		numeric(15,0) NOT NULL,
+	iObjType	smallint NOT NULL,
+	iObjId		numeric(15,0) NOT NULL,
+	iListType	smallint NOT NULL,
+	sIP			varchar2(1024) NOT NULL,
+	sRemark		varchar2(255)  NULL
+);
+alter table TBOSIPRIGHT add constraint PK_TBOSIPRIGHT primary key (iIPId);
+create index tbOsIPRight_iObjId on tbOsIPRight (iObjId);
+
+--账号操作日志
+CREATE TABLE tbOsOperationNote  (
+   iOptId             numeric(15,0)                    not null,
+   iOptObjId          numeric(15,0)                    not null,
+   iOptObjType        smallint                        not null,
+   iOptType           smallint                        not null,
+   sOptJson           varchar2(4000) null,
+   sOptMsg            varchar2(255) null,
+   sIP				  varchar2(255) null,
+   iUserId            numeric(15,0) null,
+   sUserName          varchar2(32) null,
+   sAccount           varchar2(32) null,
+   iUserDeptId        numeric(15,0) null,
+   sUserDeptName      varchar2(32) null,
+   iUserDomainId      numeric(15,0) null,
+   sUserDomainName    varchar2(32) null,
+   dOptDate           date                          not null
+);
+alter table tbOsOperationNote add constraint PK_TBOSOPERATIONNOTE primary key (iOptId);
+create index tbOsOperationNote_iOptObjId on tbOsOperationNote (iOptObjId);
+create index tbOsOperationNote_dOptDate on tbOsOperationNote (dOptDate);
+
+--字段
+alter table tbOsStaff add iErrorTime	    int		       DEFAULT 0 NULL; 
+alter table tbOsStaff add dErrorDate		date		   NULL;
+alter table tbOsStaff add sPwdQuestion	    varchar2(64)   NULL; --取回密码问题
+alter table tbOsStaff add sCustomQuestion	varchar2(64)   NULL; --用户自定义取回密码问题
+alter table tbOsStaff add sPwdAnswer		varchar2(64)   NULL; --取回密码问题答案
+
+alter table tbOsDomain add iSequence   numeric(15,0) NULL;  --排序字段
+
+--基础数据
+--防SQL注入枚举数据
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'drop ', ' ｄｒｏｐ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'create ', ' ｃｒｅａｔｅ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'exec ', ' ｅｘｅｃ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'insert ', ' ｉｎｓｅｒｔ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'select ', ' ｓｅｌｅｃｔ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId)	VALUES('Defense_SQL_Injection', 'invalidString', 'delete ', ' ｄｅｌｅｔｅ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId)	VALUES('Defense_SQL_Injection', 'invalidString', 'update ', ' ｕｐｄａｔｅ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'or ', ' ｏｒ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'and ', ' ａｎｄ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'truncate ', ' ｔｒｕｎｃａｔｅ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'execute ', ' ｅｘｅｃｕｔｅ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'grant ', ' ｇｒａｎｔ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'use ', ' ｕｓｅ ', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'invalidString', 'group_concat ', ' ｇｒｏｕｐ＿ｃｏｎｃａｔ ', 1, NULL, 1);
+--防SQL注入放开的URL
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'allow', '1', '/fastDfs!', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'allow', '2', '/commonEnum!', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'allow', '3', 'ctEnumTbl!', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_SQL_Injection', 'allow', '4', '/commonModule/fastDevelop/', 1, NULL, 1);
+
+--防Xss攻击枚举数据
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '+', '＋', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '%', '％', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '"', '＂', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '>', '＞', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '(', '（', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '''', '＇', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '<', '＜', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', ')', '）', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'invalidChar', '&', '＆', 1, NULL, 1);
+--防XSS放开的URL
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'allow', '1', '/commonEnum!getEnumMeaning.action', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'allow', '2', '/ctEnumTbl!', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'allow', '3', '/demo/export/excel.jsp', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Defense_Xss_Attack', 'allow', '4', '/commonModule/fastDevelop/', 1, NULL, 1);
+
+--密码取回问题
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId)	VALUES('Retrieve_Password', 'Question', '1', '你读的小学名称？', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Retrieve_Password', 'Question', '2', '你母亲的名字？', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Retrieve_Password', 'Question', '3', '你父亲的名字？', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('Retrieve_Password', 'Question', '4', '自定义问题', 1, NULL, 1);
+
+--IP黑白名单枚举
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsIpRight', 'iObjType', '1', '账号', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsIpRight', 'iObjType', '2', '权限', 1, NULL, 1);
+
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsIpRight', 'iListType', '1', '白名单', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsIpRight', 'iListType', '2', '黑名单', 1, NULL, 1);
+
+--修改密码、锁定解锁日志对象枚举
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId)	VALUES('tbOsOperateLog', 'optObjType', '1', '账号', 1, NULL, 1);
+	
+--修改密码、锁定解锁日志类型枚举
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'optLogType', '2', '修改密码', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'optLogType', '4', '自动锁定', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'optLogType', '5', '自动解锁', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'optLogType', '6', '手动锁定', 1, NULL, 1);
+INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'optLogType', '7', '手动解锁', 1, NULL, 1);
+
+--加两个权限菜单
+INSERT INTO tbOsRight (iRight, sRightName, iSeq, iParentId, iType, sURL, sIcon, sRemark, sGuid, iStatus, iAppFor, sRightNo, sPathId)
+  VALUES(102132, 'IP黑白名单', 9, 61, 1, 'admin/safeMgr/ipRight/index.jsp', ' ', 'IP黑白名单', ' ', 1, 1, '159baf5647964643b53a970f18e79a8d', '/1/61/12634600/')
+INSERT INTO tbOsRight (iRight, sRightName, iSeq, iParentId, iType, sURL, sIcon, sRemark, sGuid, iStatus, iAppFor, sRightNo, sPathId)
+  VALUES(102131, '账号变更日志', 41, 16031, 1, 'admin/safeMgr/log/operateLog.jsp', ' ', '账号变更日志', ' ', 1, 1, '56f5e80670c444659e6e455d9d6f9a7e', '/1/61/16031/12634400/')
+
+##################################################################
+
+更新版本：V1.0.0.4
+更新时间：2012-6-3 9:00:00
+更新人员：高涛
+更新描述：oracle分页存储过程，去掉一层子查询包装，以现有proc.sql文件中的为准
+
+##################################################################
+
+更新版本：V1.0.0.5
+更新时间：2012-8-6 18:00:00
+更新人员：高涛
+更新描述：如下
+
+Oracle:
+ALTER table tbOsDomain add sPathId varchar2(255)  NULL;  --tbosdomain增加spathid字段
+ALTER table tbOsRole add sRemark varchar2(255) NULL; --tbosrole增加sremark字段
+ALTER table tbOsStaff add iSex int DEFAULT 1 NOT NULL; --tbosstaff增加isex字段
+
+由于原来的tbOsDomain表一开始没有sPathId字段， 若需初始化已存在记录的spathid数据，可使用/safeMgr/domain!reFreshSpathId.action? 做一次完整的处理
+
+##################################################################
+更新版本：V1.0.0.6
+更新时间：2012-8-30 18:00:00
+更新人员：高涛
+更新描述：如下
+--加一菜单数据
+INSERT INTO tbOsRight ( iRight, sRightName, iSeq, iParentId, iType, sURL, sIcon, sRemark, sGuid, iStatus, iAppFor, sRightNo, sPathId ) 
+		 VALUES ( 77, '修改个人信息', 40, 16031, 1, 'admin/safeMgr/staff/staffDetail.jsp', ' ', ' ', ' ', 1, 1, '77', '/1/61/16031/77/' ) 
+
+update tbOsRight set sPathId='/1/61/16031/76/' where iRight=76
+
+#################################################################
+更新版本：V1.0.0.7
+更新时间：2012-9-12 18:00:00
+更新人员：高涛
+更新描述：
+账号操作日志的枚举变更:
+	--先删除旧的
+	  delete from tbCtEnumTbl2 where sEnumTblName='tbOsOperateLog'
+	--再加新的
+	--修改密码、锁定解锁日志对象枚举
+	INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId)	VALUES('tbOsOperateLog', 'iOptObjType', '1', '账号', 1, NULL, 1);
+		
+	--修改密码、锁定解锁日志类型枚举
+	INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'iOptLogType', '2', '修改密码', 1, NULL, 1);
+	INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'iOptLogType', '4', '自动锁定', 1, NULL, 1);
+	INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'iOptLogType', '5', '自动解锁', 1, NULL, 1);
+	INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'iOptLogType', '6', '手动锁定', 1, NULL, 1);
+	INSERT INTO tbCtEnumTbl2 (sEnumTblName, sEnumColName, iEnumValue, sEnumName, isEnabled, sRemark, iDomainId) VALUES('tbOsOperateLog', 'iOptLogType', '7', '手动解锁', 1, NULL, 1);
+
+#################################################################
+更新版本：V1.0.0.8
+更新时间：2012-9-23 18:00:00
+更新人员：高涛
+更新描述：
+1,通用表单加字段
+	alter table tbFdUserSearch add iIsRightToolbar smallint null
+	alter table tbFdUserSearch add iIsLoadInit smallint null
+	alter table tbFdUserSearch add sImportDefine varchar2(256) null
+	alter table tbFdUserSearch add iImportTemplate smallint null
+2,通用导入配置表
+  见分目录中<通用导入.sql>
+  
+#################################################################
+更新版本：V1.0.0.9
+更新时间：2012-12-19 18:00:00
+更新人员：高涛
+更新描述：
+安全管理区域表加字段
+alter table tbOsDomain add sRelateId varchar(32)  NULL
+
+
+#################################################################
+更新版本：V1.0.0.10
+更新时间：2013-6-8 18:00:00
+更新人员：高涛
+更新描述：
+安全管理相关表加个字段
+ALTER TABLE tbOsDomain ADD sPathId  VARCHAR(255) DEFAULT NULL
+ALTER TABLE tbOsStaff ADD  iSex	 INT DEFAULT 1 NOT NULL
+ALTER TABLE tbOsStaff ADD  sCard VARCHAR(32)   DEFAULT NULL
+ALTER TABLE tbOsRight ADD  sCompId VARCHAR(64) DEFAULT NULL
+
+#################################################################
+更新版本：V1.0.0.11
+更新时间：2013-8-10 18:00:00
+更新人员：彭杰文
+更新描述：
+安全管理相关表加个字段
+ALTER TABLE tbOsRight ADD iIsSensitive tinyint NULL;
+#################################################################
+更新版本：V1.0.0.12
+更新时间：2013-11-15 18:00:00
+更新人员：高涛
+更新描述：把通用表单2.0的模型合并进来了
+#################################################################
+更新版本：V1.0.0.13
+更新时间：2014-2-28 18:00:00
+更新人员：高涛
+更新描述：安全管理相关表加个字段
+alter table tbOsRight add sExInfo varchar(3000) NULL
+#################################################################
+更新版本：V1.0.0.14
+更新时间：2014-4-24 18:00:00
+更新人员：唐玉军
+更新描述：角色和系统资源关联，除了ID和类型再增加一个文本字段，用于存ID对应的名称（冗余）
+oracle:
+alter table tbOsStaffRelRole add sRemark varchar2(128) NULL
+#################################################################
+更新版本：V1.0.0.15
+更新时间：2014-4-24 18:00:00
+更新人员：高涛
+更新描述：群组管理，可给群组人员设置协调人，  人员表加专业字段：
+--oracle 版
+alter table tbWfActorDefinition add iModeratorID number(15,0) null;  --协调人员ID
+alter table tbWfActorDefinition add sModeratorName varchar2(32)  null;  --协调人员姓名
+alter table tbOsStaff add sSpecIds varchar2(256) null        --专业ID
+alter table tbOsStaff add sSpecNames varchar2(256) null  --专业名称
+#################################################################
+更新版本：V1.0.0.16
+更新时间：2014-4-24 18:00:00
+更新人员：唐玉军
+更新描述：日志模块改造
+oracle:
+--创建action方法和按钮的关联表
+CREATE TABLE TBACTION2RIGHT ( 
+    IID     NUMBER(15,0) PRIMARY KEY NOT NULL,
+    IACTIONID    NUMBER(15,0) NULL, -- 关联按钮对应的action
+    IRIGHTID    NUMBER(15,0) NULL, -- 关联按钮所在模块ID,当无关联状态，该字段为空
+    IBTNRIGHTID NUMBER(15,0) NULL, -- 关联按钮ID,当无关联状态，该字段为空
+    SCONTENT    VARCHAR2(512) NULL, --关联状态下用来将方法重命名；非关联状态下用来备注
+    IRELTYPE    NUMBER(2,0) NULL, -- -1:无关联 0：标记但未做关联 1：一对一关联 2：一对多关联 
+    SREQPARAMNAME VARCHAR2(64) NULL,  --一对多关联的时候，用来存参数名
+    SBTNPARAMVALUE VARCHAR2(128) NULL, --一对多关联的时候，用来存参数和值
+    
+    SUPDATEUSERNAME VARCHAR2(64) NULL, -- 关联配置人员名称
+    DUPDATEDATE DATE NULL,  -- 关联配置最后更新时间
+    SREMARK VARCHAR2(256) NULL -- 备注
+);
+--日志表都增加SSYSTEMNAME字段
+ALTER TABLE TBLOGFILEINFO
+     add SSYSTEMNAME VARCHAR2(32) NULL;
+ALTER TABLE tbLoginLog
+     add SSYSTEMNAME VARCHAR2(32) NULL;
+ALTER TABLE tbJdbcLog
+     add SSYSTEMNAME VARCHAR2(32) NULL;
+ALTER TABLE tbExceptionLog
+     add SSYSTEMNAME VARCHAR2(32) NULL;
+ALTER TABLE tbExceptionLog
+     add SREFERER VARCHAR2(256) NULL;
+#################################################################
+更新版本：V1.0.0.17
+更新时间：2015-6-11 18:00:00
+更新人员：彭杰文
+更新描述：新增产品权限管理
+CREATE TABLE tbOsRightProc ( 
+    iRight      	NUMBER(15,0) NOT NULL,
+    sRightName  	VARCHAR2(225) NOT NULL,
+    iSeq        	NUMBER NOT NULL,
+    iParentId   	NUMBER(15,0) NULL,
+    iType       	NUMBER NULL,
+    sURL        	VARCHAR2(255) NULL,
+    sIcon       	VARCHAR2(255) NULL,
+    sRemark     	VARCHAR2(255) NULL,
+    sGuid       	VARCHAR2(16) NULL,
+    iStatus     	NUMBER DEFAULT 1 NULL,
+    iAppFor     	NUMBER DEFAULT 2 NULL,
+    sRightNo    	VARCHAR2(32) DEFAULT '' NOT NULL,
+    sPathId     	VARCHAR2(255) NULL,
+    sCompId     	VARCHAR2(64) NULL,
+    iIsSensitive	NUMBER NULL,
+    sExInfo     	VARCHAR2(1024) NULL 
+    )
+GO
+
+CREATE UNIQUE INDEX PK_tbOsRightProc
+    ON tbOsRightProc(iRight)
+GO
+CREATE UNIQUE INDEX UNIQUE_sSRightNoProc
+    ON tbOsRightProc(sRightNo)
+GO

@@ -1,0 +1,22 @@
+div{overflow: hidden;}
+/**º”‘ÿµ»¥˝Ãı*/ 
+.bar_div{z-index: 20000;width:200px;position:absolute;border:1px #000000 dashed;margin-top:-16px; margin-left:-100px;top:40%; left:50%; padding:5px;}
+.bar_icons{background:url(../images/easyui/large-loading.gif) no-repeat;
+		width:32px;
+		height:32px;
+		margin-right:8px;
+		float:left;
+		margin-left:6px;
+		vertical-align:middle;
+}
+.bar_font{font-size:9pt;color:#000000;line-height:32px; }
+
+input,select{
+    border: #7F9DB9 solid 1px;
+    height: 22px;
+}
+input:hover, select:hover{
+    border: #117dc5 solid 1px;
+}
+.formbasic td{font-weight:normal;word-break:keep-all;white-space:nowrap;color:#0086c2;text-align:right;vertical-align:middle;}
+.formbasic th{font-weight:normal;word-wrap:break-word;word-break:break-all;color:#3e3a39;padding:3px;vertical-align:middle;text-align: left;}

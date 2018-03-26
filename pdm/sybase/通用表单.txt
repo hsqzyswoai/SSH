@@ -1,0 +1,263 @@
+CREATE TABLE DGT_DBTM_ARCHIVE ( 
+    I_ID    	varchar(32) NOT NULL,
+    I_OID   	varchar(32) NULL,
+    I_SORTID	varchar(32) NULL,
+    S_NAME  	varchar(64) NULL,
+    S_DESC  	varchar(200) NULL,
+    CONSTRAINT PK_DGT_DBTM_ARCHIVE PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE TABLE DGT_DBTM_DBT ( 
+    I_ID       	varchar(32) NOT NULL,
+    I_OID      	varchar(32) NULL,
+    S_VER      	varchar(32) NOT NULL,
+    S_TABLECODE	varchar(128) NOT NULL,
+    S_TABLENAME	varchar(128) NOT NULL,
+    I_PID      	varchar(32) NULL,
+    I_STATUS   	int NOT NULL,
+    I_ARCHIVEID	varchar(32) NULL,
+    S_FKTEXT   	varchar(4000) NULL,
+    I_ATTACH   	int NULL,
+    CONSTRAINT PK_DGT_DBTM_DBT PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE INDEX DBT_ARCHIVEID
+    ON DGT_DBTM_DBT(I_ARCHIVEID)
+GO
+CREATE TABLE DGT_DBTM_ENUM ( 
+    I_ID       	varchar(32) NOT NULL,
+    I_OID      	varchar(32) NULL,
+    I_FILEDID  	varchar(32) NOT NULL,
+    S_TABLENAME	varchar(46) NULL,
+    S_FILEDNAME	varchar(46) NULL,
+    I_VER      	int NULL,
+    I_ENUMVALUE	varchar(128) NOT NULL,
+    S_ENUMDSCR 	varchar(128) NOT NULL,
+    S_ENUMDESC 	varchar(256) NULL,
+    I_DISABLE  	smallint NOT NULL,
+    CONSTRAINT PK_DGT_DBTM_ENUM PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE TABLE DGT_DBTM_FIELD ( 
+    I_ID         	varchar(32) NOT NULL,
+    I_NUM        	int NOT NULL,
+    I_DBTID      	varchar(32) NOT NULL,
+    S_FILEDCODE  	varchar(128) NOT NULL,
+    S_FILEDNAME  	varchar(128) NOT NULL,
+    S_FILEDTYPE  	varchar(128) NOT NULL,
+    I_FILEDLEN   	int NULL,
+    I_DECPOS     	int NULL,
+    I_PRYKEY     	int NOT NULL,
+    I_FKEY       	int NOT NULL,
+    S_FKTABLENAME	varchar(128) NULL,
+    S_FKCODE     	varchar(128) NULL,
+    I_SYFILED    	int NULL,
+    I_DISPLAY    	int NULL,
+    I_NULLVALUE  	int NOT NULL,
+    I_IDENX      	int NOT NULL,
+    I_VALUETYPE  	int NOT NULL,
+    I_MINVALUE   	int NULL,
+    I_MAXVALUE   	int NULL,
+    I_REFFIELDID 	varchar(32) NULL,
+    I_OID        	varchar(32) NULL,
+    I_CONDITION  	int NULL,
+    S_UNIT       	varchar(128) NULL,
+    S_FIELDJSON     varchar(1024) NULL,
+    CONSTRAINT PK_DGT_DBTM_FIELD PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE INDEX FIELD_DBTID
+    ON DGT_DBTM_FIELD(I_DBTID)
+GO
+CREATE TABLE DGT_DBTM_SIMPLE ( 
+    I_ID       	varchar(32) NOT NULL,
+    I_OID      	varchar(32) NULL,
+    I_FILEDID  	varchar(32) NOT NULL,
+    S_TABLENAME	varchar(45) NULL,
+    S_FILEDNAME	varchar(45) NULL,
+    I_VER      	int NULL,
+    I_VALUE    	smallint NOT NULL,
+    I_REFVALUE 	smallint NOT NULL,
+    S_ENUMDSCR 	varchar(128) NOT NULL,
+    CONSTRAINT PK_DGT_DBTM_SIMPLE PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE TABLE DGT_DBTM_SORT ( 
+    I_ID      	varchar(32) NOT NULL,
+    I_OID     	varchar(32) NULL,
+    S_SORTNAME	varchar(128) NOT NULL,
+    S_SORTDESC	varchar(255) NULL,
+    I_PID     	varchar(32) NULL,
+    I_TYPE    	smallint NOT NULL,
+    CONSTRAINT PK_DGT_DBTM_SORT PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE TABLE DGT_PAGE_FLOW_RECORD ( 
+    I_ID        	varchar(32) NOT NULL,
+    I_PAGEID    	varchar(32) NULL,
+    I_FLOWID    	int NULL,
+    D_RECORDDATE	datetime NULL,
+    S_COMPINPAGE	text NULL,
+    S_IPADDRESS     varchar(64) NULL,
+    CONSTRAINT PK_DGT_PT_COMPINPAGE PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE INDEX RECORD_I_PAGEID
+    ON DGT_PAGE_FLOW_RECORD(I_PAGEID)
+GO
+CREATE TABLE DGT_PT_ARCHIVE ( 
+    I_ID           	varchar(32) NOT NULL,
+    I_OID          	varchar(32) NULL,
+    I_SORTID       	varchar(32) NOT NULL,
+    I_DBTMARCHIVEID	varchar(32) NOT NULL,
+    S_NAME         	varchar(64) NOT NULL,
+    S_DESC         	varchar(200) NULL,
+    CONSTRAINT PK_DGT_PT_ARCHIVE PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE TABLE DGT_PT_BILLNO ( 
+    I_PAGEID  	varchar(32) NOT NULL,
+    S_BILLNO  	varchar(64) NULL,
+    S_DATEFMT 	varchar(32) NULL,
+    I_CURVALUE	numeric(15,0) NULL 
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE TABLE DGT_PT_COMPINPAGE ( 
+    I_ID      	varchar(32) NOT NULL,
+    I_OID     	varchar(32) NULL,
+    I_PAGEID  	varchar(32) NOT NULL,
+    S_SCENE   	varchar(1024) NOT NULL,
+    S_PROPERTY	text NOT NULL,
+    CONSTRAINT PK_DGT_PT_COMPINPAGE PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE INDEX COMPINPAGE_PAGEID
+    ON DGT_PT_COMPINPAGE(I_PAGEID)
+GO
+CREATE TABLE DGT_PT_PAGE ( 
+    I_ID        	varchar(32) NOT NULL,
+    I_OID       	varchar(32) NULL,
+    S_CODE      	varchar(128) NOT NULL,
+    I_ARCHIVEID 	varchar(32) NULL,
+    S_VER       	varchar(32) NOT NULL,
+    S_FORMNAME  	varchar(128) NOT NULL,
+    I_DBTMVER   	int NOT NULL,
+    S_TEMP      	varchar(128) NOT NULL,
+    I_STATUS    	int NOT NULL,
+    S_PID       	varchar(32) NULL,
+    D_CREATEDATE	datetime NULL,
+    S_IPADDRESS     varchar(64) NULL,
+    CONSTRAINT PK_DGT_PT_PAGE PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE INDEX PAGE_ARCHIVEID
+    ON DGT_PT_PAGE(I_ARCHIVEID)
+GO
+CREATE TABLE DGT_PT_SORT ( 
+    I_ID      	varchar(32) NOT NULL,
+    I_OID     	varchar(32) NULL,
+    S_SORTNAME	varchar(128) NOT NULL,
+    S_SORTDESC	varchar(255) NULL,
+    I_PID     	varchar(32) NULL,
+    I_TYPE    	int NULL,
+    CONSTRAINT PK_DGT_PT_SORT PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE TABLE DGT_PUB_RECORD ( 
+    I_ID        	int NOT NULL,
+    I_TYPE      	int NOT NULL,
+    I_ARCHIVEID 	varchar(32) NOT NULL,
+    S_VER       	varchar(45) NOT NULL,
+    S_ORIG      	text NOT NULL,
+    S_CHANGED   	text NOT NULL,
+    D_CREATETIME	datetime NOT NULL,
+    S_STAFF     	varchar(100) NOT NULL,
+    S_STAFFNAME 	varchar(100) NOT NULL,
+    I_EXPORT    	int NOT NULL,
+    I_STEP      	int NOT NULL,
+    I_SORTID    	varchar(32) NOT NULL,
+    I_RECORDTYPE	int NOT NULL,
+    I_STATUS    	int NOT NULL,
+    CONSTRAINT PK_DGT_PUB_RECORD PRIMARY KEY(I_ID)
+	WITH max_rows_per_page = 0, reservepagegap = 0
+    )
+LOCK DATAROWS
+WITH exp_row_size = 0, 
+reservepagegap = 0, 
+identity_gap = 0
+ON 'default' 
+GO
+CREATE INDEX RECORD_ARCHIVEID
+    ON DGT_PUB_RECORD(I_ARCHIVEID)
+GO
